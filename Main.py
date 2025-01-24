@@ -8,12 +8,18 @@ app = Flask(__name__)
 # Load model YOLOv8
 model = YOLO("best10epochs.pt")  # Ganti "model.pt" dengan path model YOLOv8 Anda
 
+@app.route('/', methods=['POST'])
+def test_get():
+    return jsonify({
+        "info": "success"
+    })
+
 @app.route('/detect', methods=['POST'])
 def detect():
-    if 'file' not in request.files:
-        return jsonify({"error": "No file provided"}), 400
+    if 'image' not in request.files:
+        return jsonify({"error": "No image provided"}), 400
 
-    file = request.files['file']
+    file = request.files['image']
     
     try:
         # Baca file gambar
