@@ -4,15 +4,17 @@ from PIL import Image, ImageDraw, ImageFont
 from datetime import datetime
 import io
 import os
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # Load model YOLOv8
-model = YOLO("best10epochs.pt")
+model = YOLO("best.pt")
 
 CLASS_LABELS = {
-    0: "Tidak Memakai Helm",
-    1: "Memakai Helm",
+    0: "Memakai Helm",
+    1: "Tidak Memakai Helm",
 }
 
 @app.route('/', methods=['GET'])
@@ -83,7 +85,7 @@ def draw_bounding_boxes(file, detections):
         draw = ImageDraw.Draw(image)
 
         # Load font default
-        font = ImageFont.load_default()
+        font = ImageFont.truetype("/font/Roboto-Black.ttf", 20)
 
         for det in detections:
             x1, y1, x2, y2 = det["bbox"]
